@@ -7,6 +7,7 @@ and generate some preliminary visualizations with GraPhlAn.
 - [MetaPhlAn2](https://bitbucket.org/biobakery/metaphlan2#markdown-header-installation)
 - [GraPhlAn](https://huttenhower.sph.harvard.edu/graphlan)
 - [BBMap](https://sourceforge.net/projects/bbmap/)
+- Python==2.7
 
 #### Notes:
 The following must be available in your *PATH*:

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import time
 import argparse
@@ -66,8 +68,8 @@ class MetaPhlAn2(object):
 
     def run_metaphlan(self, single_read):
         print('\nRunning MetaPhlAn2...')
-        output_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + b'_profile.txt')
-        biom_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + b'_OTU.biom')
+        output_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + '_profile.txt')
+        biom_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + '_OTU.biom')
 
         # '-t rel_ab_w_read_stats ' for rel abundance, but breaks graphlan
         cmd = 'metaphlan2.py ' \
@@ -107,8 +109,7 @@ class MetaPhlAn2(object):
 
         annotated_file = overall_abundance_profile.replace('profile', 'profile.annot')
 
-        p = subprocess.Popen('python2 '
-                             'export2graphlan.py '
+        p = subprocess.Popen('export2graphlan.py '
                              '--skip_rows 1,2 '
                              '-i {} '
                              '--tree merged_abundance.tree.txt '
@@ -127,8 +128,7 @@ class MetaPhlAn2(object):
         # Step 2: Create cladogram pieces
         print("\nCreating cladogram input files...")
 
-        p = subprocess.Popen('python2 '
-                             'graphlan_annotate.py '
+        p = subprocess.Popen('graphlan_annotate.py '
                              '--annot {} '
                              'merged_abundance.tree.txt '
                              'merged_abundance.xml'.format(annotated_file),
@@ -139,8 +139,7 @@ class MetaPhlAn2(object):
 
         # Step 3: Visualize cladogram
         print("\nVisualizing cladogram...")
-        p = subprocess.Popen('python2 '
-                             'graphlan.py '
+        p = subprocess.Popen('graphlan.py '
                              '--dpi 300 '
                              'merged_abundance.xml '
                              'merged_abundance.png ',
