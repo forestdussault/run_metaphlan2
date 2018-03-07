@@ -1,13 +1,18 @@
-## Wrapper for MetaPhlAn2
+## Wrappers for MetaPhlAn2 + HUMAnN2
 
-This is a simple wrapper for MetaPhlAn2 to quickly profile a metagenome
-and generate some preliminary visualizations with GraPhlAn.
+These scripts are simple wrappers for MetaPhlAn2 and HUMAnN2.
+
+run_metaphlan2.py will quickly profile a metagenome and generate
+preliminary visualizations with GraPhlAn.
+
+run_humann2.py will run the full HUMAnN2 pipeline on a given sample.
 
 #### Requirements:
-- [MetaPhlAn2](https://bitbucket.org/biobakery/metaphlan2#markdown-header-installation)
+- Python==2.7
+- MetaPhlAn2==2.6.0
 - [GraPhlAn](https://huttenhower.sph.harvard.edu/graphlan)
 - [BBMap](https://sourceforge.net/projects/bbmap/)
-- Python==2.7
+- [HUMAnN2](http://huttenhower.sph.harvard.edu/humann2)
 
 #### Notes:
 The following must be available in your *PATH*:
@@ -16,6 +21,7 @@ The following must be available in your *PATH*:
 - export2graphlan.py
 - graphlan_annotate.py
 - graphlan.py
+- humann2
 
 #### Usage:
 ```bash
