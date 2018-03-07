@@ -66,16 +66,17 @@ class MetaPhlAn2(object):
 
     def run_metaphlan(self, single_read):
         print('\nRunning MetaPhlAn2...')
-        output_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + '_profile.txt')
+        output_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + b'_profile.txt')
+        biom_filename = os.path.join(self.workdir, os.path.basename(single_read).split('_')[0] + b'_OTU.biom')
 
-        # This is very bad, but it works for now
         # '-t rel_ab_w_read_stats ' for rel abundance, but breaks graphlan
         cmd = 'metaphlan2.py ' \
               '{} ' \
               '--input_type fastq ' \
               '--bt2_ps sensitive-local ' \
+              '--biom {} ' \
               '--nproc 12 > ' \
-              '{}'.format(single_read, output_filename)
+              '{}'.format(single_read, biom_filename, output_filename)
         print(cmd)
 
         p = subprocess.Popen(cmd, shell=True)
