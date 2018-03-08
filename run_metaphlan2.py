@@ -117,8 +117,8 @@ class MetaPhlAn2(object):
                              '--most_abundant 100 '
                              '--abundance_threshold 1 '
                              '--least_biomarkers 10 '
-                             '--annotations 5,6 ' # Taxonomic levels to receive annotations
-                             '--external_annotations 7 ' # Taxonomic level for external legend
+                             '--annotations 5,6 '  # Taxonomic levels to receive annotations
+                             '--external_annotations 7 '  # Taxonomic level for external legend
                              '--min_clade_size 1'.format(overall_abundance_profile, annotated_file),
                              shell=True,
                              cwd=self.workdir,
@@ -190,7 +190,8 @@ if __name__ == '__main__':
                                                  'single or paired reads and ultimately generate a species abundance '
                                                  'profile as well as a cladogram figure. If a read pair is submitted, '
                                                  'the reads will first be merged using BBmerge.')
-    parser.add_argument('fastq_filenames',
+    parser.add_argument('-f', '--fastq_filenames',
+                        required=True,
                         help='Path to the FastQ file(s) you would like to perform MetaPhlAn2 analysis on. '
                              'Enter a single read to begin the MetaPhlAn2 profiling process. '
                              'If two reads are passed they will be automatically merged beforehand.',
