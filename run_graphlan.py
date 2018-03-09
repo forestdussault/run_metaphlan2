@@ -9,8 +9,7 @@ def create_cladogram(overall_abundance_profile, workdir):
 
     annotated_file = overall_abundance_profile.replace('profile', 'profile.annot')
 
-    p = subprocess.Popen('python2 '
-                         'export2graphlan.py '
+    p = subprocess.Popen('export2graphlan.py '
                          '--skip_rows 1,2 '
                          '-i {} '
                          '--tree merged_abundance.tree.txt '
@@ -29,8 +28,7 @@ def create_cladogram(overall_abundance_profile, workdir):
     # Step 2: Create cladogram pieces
     print("\nCreating cladogram input files...")
 
-    p = subprocess.Popen('python2 '
-                         'graphlan_annotate.py '
+    p = subprocess.Popen('graphlan_annotate.py '
                          '--annot {} '
                          'merged_abundance.tree.txt '
                          'merged_abundance.xml'.format(annotated_file),
@@ -41,8 +39,7 @@ def create_cladogram(overall_abundance_profile, workdir):
 
     # Step 3: Visualize cladogram
     print("\nVisualizing cladogram...")
-    p = subprocess.Popen('python2 '
-                         'graphlan.py '
+    p = subprocess.Popen('graphlan.py '
                          '--dpi 300 '
                          '--pad 2 '
                          'merged_abundance.xml '
