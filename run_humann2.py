@@ -77,7 +77,9 @@ def run_humann2(fastq_file, metaphlan_dir):
           '--output {} ' \
           '--memory-use maximum ' \
           '--threads 10 ' \
-          '--metaphlan {}'.format(fastq_file, outdir, metaphlan_dir)  # Run metaphlan 2.6.0 (required version)
+          '--metaphlan {} ' \
+          '--translated-query-coverage-threshold 80.0 ' \
+          '--identity-threshold 40.0'.format(fastq_file, outdir, metaphlan_dir)  # Run MetaPhlAn2 2.6.0
     print(cmd)
 
     p = subprocess.Popen(cmd, shell=True)
@@ -88,6 +90,18 @@ def run_humann2(fastq_file, metaphlan_dir):
     pathcoverage = glob.glob(os.path.join(outdir, '*pathcoverage.tsv'))
 
     return genefamilies, pathabundances, pathcoverage, outdir
+
+
+def run_bbduk(fastq_file, min_len=50):
+    outname = fastq_file.replace('.fastq', '_filtered.fastq')
+    cmd = "bbduk.sh -Xmx1g in={in1} out={out1} qtrim=w " \
+                "trimq=10 k=25 minlength={ml} ref=adapters" \
+        .format(in1=fastq_file,
+                out1=outname,
+                ml=min_len)
+    p = subprocess.Popen(cmd, shell=True)
+    p.wait()
+    return outname
 
 
 class Humann2(object):
@@ -113,16 +127,19 @@ class Humann2(object):
         else:
             self.fastq_r1 = self.fastq_filenames[0]
 
-        # Step 1: Create gene families, pathway abundance, and pathway coverage output files
-        genefamilies, pathabundances, pathcoverage, outdir = run_humann2(self.fastq_r1, self.metaphlan_dir)
+        # Step 1: Quality filter sequences
+        filtered_fastq = run_bbduk(fastq_file=self.fastq_r1)
 
-        # Step 2: Normalize output files
+        # Step 2: Create gene families, pathway abundance, and pathway coverage output files
+        genefamilies, pathabundances, pathcoverage, outdir = run_humann2(filtered_fastq, self.metaphlan_dir)
+
+        # Step 3: Normalize output files
         genefamilies_relab, pathabundances_relab = normalize_humann2(genefamilies=genefamilies,
                                                                      pathabundances=pathabundances)
         print('GENEFAMILIES_RELAB: {}'.format(str(genefamilies_relab)))
         print('PATHABUNDANCES_RELAB: {}'.format(str(pathabundances_relab)))
 
-        # Step 3: Join the output files
+        # Step 4: Join the output files
         output_files = join_humann2(outdir=outdir)
         print('FINAL OUTPUT FILES: {}'.format(str(output_files)))
 
